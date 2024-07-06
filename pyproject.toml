@@ -13,6 +13,7 @@ sqlalchemy = {extras = ["asyncio"], version = "^2.0.31"}
 aiosqlite = "^0.20.0"
 pytest = "^8.2.2"
 coverage = "^7.5.4"
+inflection = "^0.5.1"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^3.7.1"
@@ -52,7 +53,8 @@ skip_gitignore = true
 [tool.ruff]
 line-length = 140
 exclude = [".git", "__pycache__", "dist"]
-target-version = "py39"
+target-version = "py312"
+ignore = ["F821"]
 # Allow unused variables when underscore-prefixed.
 lint.dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
