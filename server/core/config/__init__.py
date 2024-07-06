@@ -15,7 +15,7 @@ class SettingsFactory:
 
     def __call__(self) -> BaseConfig:
         config_model = DevelopmentConfig
-        if self.mode == Modes.STAGING:  # pragma: no cover
+        if self.mode == Modes.STAGING:
             config_model = StagingConfig
         elif self.mode == Modes.PRODUCTION:
             config_model = ProductionConfig
@@ -28,9 +28,9 @@ class SettingsFactory:
 
 
 @lru_cache()
-def get_settings() -> BaseConfig:
-    factory = SettingsFactory(mode=os.getenv("MODE", default="development"))
+def get_settings(mode: Modes) -> BaseConfig:
+    factory = SettingsFactory(mode=mode)
     return factory()
 
 
-settings: BaseConfig = get_settings()
+settings: BaseConfig = get_settings(mode=os.getenv("MODE", default="development"))

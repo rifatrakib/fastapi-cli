@@ -1,8 +1,8 @@
 from typing import Type
-from typing_extensions import Self
 
 from pydantic import model_validator
 from pydantic_settings import BaseSettings, PydanticBaseSettingsSource
+from typing_extensions import Self
 
 from server.core.enums import ConfigSource, Modes
 from server.core.schemas import BaseConfig
@@ -86,7 +86,6 @@ class AppConfig(BaseConfig):
         password = self.CACHE_PASSWORD
         host = self.CACHE_HOST
         port = self.CACHE_PORT
-        name = self.CACHE_NAME
         engine = self.CACHE_ENGINE
 
         # when using locmem or memory cache services
@@ -136,17 +135,17 @@ class AppConfig(BaseConfig):
         resource_type: str,
     ) -> str:
         # when all the required fields are given
-        if all([username, password, host, port, name, engine]):
+        if all([username, password, host, port, engine]):
             domain = f"{username}:{password}@{host}:{port}"
             return f"{engine}://{domain}/{name}" if name else f"{engine}://{domain}"
 
         # when password is not given
-        if all([username, host, port, name, engine]):
+        if all([username, host, port, engine]):
             domain = f"{username}@{host}:{port}"
             return f"{engine}://{domain}/{name}" if name else f"{engine}://{domain}"
 
         # when username and password are not given
-        if all([host, port, name, engine]):
+        if all([host, port, engine]):
             domain = f"{host}:{port}"
             return f"{engine}://{domain}/{name}" if name else f"{engine}://{domain}"
 
