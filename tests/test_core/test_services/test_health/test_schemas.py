@@ -2,7 +2,7 @@ import json
 
 import pytest
 
-from server.core.services.health.schemas import HealthResponse
+from server.core.services.health.schemas.responses import HealthResponse
 
 
 def test_health_response_schema():

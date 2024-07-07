@@ -1,7 +1,10 @@
-from unittest.mock import mock_open, patch
+from unittest.mock import MagicMock, mock_open, patch
+
+import pytest
+from starlette.routing import BaseRoute
 
 from server.core.config import settings
-from server.core.documentation.openapi import api_configuration_options, configure_openapi
+from server.core.documentation.openapi import add_endpoint_description, api_configuration_options, configure_openapi
 from server.core.documentation.schemas import APIConfig, Contact, ExternalDocs, OpenAPIConfig, OpenAPITags
 from server.core.enums import Tags
 
@@ -59,3 +62,32 @@ def test_configure_openapi():
     assert openapi_config.docs_url == f"{settings.API_PREFIX}/docs"
     assert openapi_config.redoc_url == f"{settings.API_PREFIX}/redoc"
     assert openapi_config.tags_metadata == expected_tags_metadata
+
+
+def test_add_endpoint_description():
+    # Mock route
+    mock_route = MagicMock(spec=BaseRoute)
+    mock_route.name = "test_endpoint"
+
+    # Mock the open function to simulate reading from a file
+    mock_description = "This is a test description."
+    with patch("builtins.open", mock_open(read_data=mock_description)):
+
+        # Call the function with the mocked route and python_path
+        add_endpoint_description(mock_route, "server.core.api")
+
+        # Check if the route's description was set correctly
+        assert mock_route.description == mock_description
+
+
+def test_add_endpoint_description_invalid_path():
+    # Mock route
+    mock_route = MagicMock(spec=BaseRoute)
+    mock_route.name = "test_endpoint"
+
+    # Mock the open function to raise a FileNotFoundError
+    with patch("builtins.open", side_effect=FileNotFoundError):
+
+        # Call the function with the mocked route and python_path
+        with pytest.raises(FileNotFoundError):
+            add_endpoint_description(mock_route, "server.core.api")

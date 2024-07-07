@@ -1,3 +1,5 @@
+from starlette.routing import BaseRoute
+
 from server.core.config import settings
 from server.core.enums import Tags
 
@@ -39,3 +41,9 @@ def configure_openapi() -> OpenAPIConfig:
         ),
     ]
     return OpenAPIConfig(**api_config.model_dump(), tags_metadata=tags_metadata)
+
+
+def add_endpoint_description(route: BaseRoute, python_path: str):
+    directory = python_path.replace(".", "/")
+    with open(f"{directory}/documentation/{route.name}.md") as reader:
+        route.description = reader.read()

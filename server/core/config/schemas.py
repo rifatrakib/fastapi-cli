@@ -16,7 +16,7 @@ class RouterConfig(BaseSchema):
     @field_validator("router", mode="before")
     def validate_router(cls, v):
         try:
-            module_name, class_name = f"{v}.routes", "router"
+            module_name, class_name = f"{v}.routes.v1", "router"
             module = import_module(module_name)
             router = getattr(module, class_name)
             return router
