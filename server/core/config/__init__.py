@@ -35,5 +35,5 @@ def get_settings(mode: Modes) -> AppConfig:
 
 settings: AppConfig = get_settings(mode=os.getenv("MODE", default="development"))
 services: list[str] = [
-    "server.services.health",
+    "server.core.services.health",
 ]

@@ -10,7 +10,7 @@ def test_merge_routers():
     app = FastAPI()
 
     # Mock the services
-    mock_services = ["server.services.health"]
+    mock_services = ["server.core.services.health"]
     services_backup = services.copy()
     services[:] = mock_services
 

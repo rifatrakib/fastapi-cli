@@ -7,7 +7,7 @@ from server.core.config.schemas import RouterConfig
 
 
 def test_router_config_valid_router():
-    config = RouterConfig(router="server.services.health")
+    config = RouterConfig(router="server.core.services.health")
     assert config.config == {"prefix": settings.API_PREFIX}
     assert isinstance(config.router, APIRouter)
 
