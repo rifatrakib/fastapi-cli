@@ -1,0 +1,9 @@
+"""
+This module contains the request schemas for the {placeholder} service.
+"""
+
+from server.core.schemas import BaseRequestSchema
+
+
+class {Placeholder}Request(BaseRequestSchema):
+    pass

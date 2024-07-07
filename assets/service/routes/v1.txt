@@ -1,0 +1,12 @@
+"""
+This module contains the routes for the {placeholder} service.
+"""
+
+from fastapi import APIRouter
+
+router = APIRouter(prefix="/v1/{placeholder}", tags=["{Placeholder}"]) # TODO: Add tags in the `Tags` enum class and use here
+
+
+@router.get("/check", summary="Check {placeholder} service")
+async def {placeholder}_check():
+    return {"message": "{Placeholder} service is running"}

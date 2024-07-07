@@ -17,6 +17,17 @@ msgpack = ["msgpack (>=0.5.5)"]
 redis = ["redis (>=4.2.0)"]
 
 [[package]]
+name = "aiofiles"
+version = "24.1.0"
+description = "File support for asyncio."
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "aiofiles-24.1.0-py3-none-any.whl", hash = "sha256:b4ec55f4195e3eb5d7abd1bf7e061763e864dd4954231fb8539a0ef8bb8260e5"},
+    {file = "aiofiles-24.1.0.tar.gz", hash = "sha256:22a075c9e5a3810f0c2e48f3008c94d68c65d763b9b03857924c99e57355166c"},
+]
+
+[[package]]
 name = "aiosqlite"
 version = "0.20.0"
 description = "asyncio bridge to the standard sqlite3 module"
@@ -1714,4 +1725,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "2daf2d992d40e1013ac2547c95a443aeb1f6e5306448fdf8d5326696fe0fc3f6"
+content-hash = "b0d7a47bb84c18474ac1ab3155b51241b282716107d24e642f3d38c3e77777ed"

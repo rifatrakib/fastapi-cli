@@ -1,0 +1,9 @@
+"""
+This module contains the response schemas for the {placeholder} service.
+"""
+
+from server.core.schemas import BaseResponseSchema
+
+
+class {Placeholder}Response(BaseResponseSchema):
+    pass
