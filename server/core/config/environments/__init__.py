@@ -1,6 +1,6 @@
 from typing import Type
 
-from pydantic import model_validator
+from pydantic import field_validator, model_validator
 from pydantic_settings import BaseSettings, PydanticBaseSettingsSource
 from typing_extensions import Self
 
@@ -50,6 +50,10 @@ class AppConfig(BaseConfig):
             file_secret_settings,
         )
         return sources
+
+    @field_validator("API_PREFIX")
+    def validate_api_prefix(cls, value: str) -> str:
+        return f"/{value.strip('/')}"
 
     @model_validator(mode="after")
     def validate_rds_config(self) -> Self:

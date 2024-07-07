@@ -1,7 +1,7 @@
 import os
 from functools import lru_cache
 
-from server.core.config.environments import BaseConfig
+from server.core.config.environments import AppConfig
 from server.core.config.environments.development import DevelopmentConfig
 from server.core.config.environments.production import ProductionConfig
 from server.core.config.environments.staging import StagingConfig
@@ -13,7 +13,7 @@ class SettingsFactory:
     def __init__(self, mode: str):
         self.mode = mode
 
-    def __call__(self) -> BaseConfig:
+    def __call__(self) -> AppConfig:
         config_model = DevelopmentConfig
         if self.mode == Modes.STAGING:
             config_model = StagingConfig
@@ -28,9 +28,12 @@ class SettingsFactory:
 
 
 @lru_cache()
-def get_settings(mode: Modes) -> BaseConfig:
+def get_settings(mode: Modes) -> AppConfig:
     factory = SettingsFactory(mode=mode)
     return factory()
 
 
-settings: BaseConfig = get_settings(mode=os.getenv("MODE", default="development"))
+settings: AppConfig = get_settings(mode=os.getenv("MODE", default="development"))
+services: list[str] = [
+    "server.services.health",
+]

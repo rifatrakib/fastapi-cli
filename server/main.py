@@ -1,11 +1,5 @@
 from fastapi import FastAPI
 
-from server.core.config import settings
+from server.core.config.services import configure_app
 
-app = FastAPI()
-
-
-@app.get("/health")
-async def health():
-    print(settings)
-    return {"status": "ok"}
+app: FastAPI = configure_app()

@@ -177,3 +177,33 @@ def test_custom_sources():
         AppConfig, None, None, None, None  # init_settings  # env_settings  # dotenv_settings  # file_secret_settings
     )
     assert len(sources) == 4
+
+
+def test_validate_api_prefix_trailing_slash():
+    config = AppConfig(API_PREFIX="api/")
+    assert config.API_PREFIX == "/api"
+
+
+def test_validate_api_prefix_no_slash():
+    config = AppConfig(API_PREFIX="api")
+    assert config.API_PREFIX == "/api"
+
+
+def test_validate_api_prefix_leading_and_trailing_slash():
+    config = AppConfig(API_PREFIX="/api/")
+    assert config.API_PREFIX == "/api"
+
+
+def test_validate_api_prefix_only_slash():
+    config = AppConfig(API_PREFIX="/")
+    assert config.API_PREFIX == "/"
+
+
+def test_validate_api_prefix_empty():
+    config = AppConfig(API_PREFIX="")
+    assert config.API_PREFIX == "/"
+
+
+def test_validate_api_prefix_multiple_slashes():
+    config = AppConfig(API_PREFIX="///api///")
+    assert config.API_PREFIX == "/api"
