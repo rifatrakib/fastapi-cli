@@ -19,11 +19,16 @@ async def write_service_file(asset_file: Path, project: str, registry: str, name
         text = await file.read()
 
     content = text.replace("{placeholder}", name).replace("{Placeholder}", name.capitalize())
-    dir, file_name = str(asset_file).replace("\\", "/").replace("assets/service/", "").rsplit("/", 1)
-    file_name = file_name.replace(".txt", ".py")
-    dest = Path(f"{project}/server/{registry}/{name}/{dir}")
-    dest.mkdir(parents=True, exist_ok=True)
 
+    try:
+        dir, file_name = str(asset_file).replace("\\", "/").replace("assets/service/", "").rsplit("/", 1)
+        file_name = file_name.replace(".txt", ".py")
+        dest = Path(f"{project}/server/{registry}/{name}/{dir}")
+    except Exception:
+        file_name = str(asset_file).replace("\\", "/").replace("assets/service/", "").replace(".txt", ".py")
+        dest = Path(f"{project}/server/{registry}/{name}")
+
+    dest.mkdir(parents=True, exist_ok=True)
     async with aiofiles.open(f"{dest}/{file_name}", "w") as file:
         await file.write(content)
 
@@ -36,7 +41,7 @@ async def generate_service_files(project: str, registry: str, service: str):
     for file in files:
         tasks.append(write_service_file(file, project, registry, service))
 
-    await asyncio.gather(*tasks, return_exceptions=True)
+    await asyncio.gather(*tasks, return_exceptions=False)
     Path(f"{project}/server/{registry}/{service}/__init__.py").touch()
     Path(f"{project}/server/{registry}/{service}/routes/__init__.py").touch()
     Path(f"{project}/server/{registry}/{service}/schemas/__init__.py").touch()
@@ -53,7 +58,7 @@ async def append_endpoint(project: str, registry: str, service: str, version: st
         description = await file.read()
 
     mapper = {
-        "{method}": method,
+        "{method}": method.upper(),
         "{path}": path,
         "{function}": fn,
         "{version}": version,
@@ -72,3 +77,8 @@ async def append_endpoint(project: str, registry: str, service: str, version: st
 
     async with aiofiles.open(description_file, "w") as f:
         await f.write(description)
+
+
+def validate_methods(method_name: str):
+    if method_name.upper() not in Methods.__members__.values():
+        raise KeyError

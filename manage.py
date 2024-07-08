@@ -5,7 +5,7 @@ from pathlib import Path
 
 import typer
 
-from utils import append_endpoint, generate_service_files
+from utils import Methods, append_endpoint, generate_service_files, validate_methods
 
 app = typer.Typer()
 
@@ -63,15 +63,20 @@ def add_endpoint(
     registry: str = typer.Option("services", help="Name of the registry"),
     service: str = typer.Option(None, help="Name of the service"),
     version: str = typer.Option(None, help="Version of the service"),
-    method: str = typer.Option(None, help="HTTP method"),
+    method: Methods = typer.Option(None, help="HTTP method"),
     path: str = typer.Option(None, help="Path for the endpoint"),
     fn: str = typer.Option(None, help="Function name"),
 ):
-    if not any([project, registry, service, version, method, path, fn]):
-        typer.echo("Please provide all the required arguments")
-        raise typer.Exit()
+    try:
+        validate_methods(method)
+        if not any([project, registry, service, version, method, path, fn]):
+            typer.echo("Please provide all the required arguments")
+            raise typer.Exit()
 
-    asyncio.run(append_endpoint(project, registry, service, version, method, path, fn))
+        asyncio.run(append_endpoint(project, registry, service, version, method, path, fn))
+    except Exception as e:
+        typer.echo(e)
+        raise typer.Exit()
 
 
 if __name__ == "__main__":
